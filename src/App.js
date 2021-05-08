@@ -34,12 +34,12 @@ const App = () => {
         const centers = res.centers;
         if (centers) {
           centers.map(({ address, sessions }) => {
-            if (address === "MAA GAYATRI SCHOOL MANEJA GAM RAOD") {
               sessions.map(({ available_capacity, min_age_limit }) => {
                 console.log(min_age_limit);
-                setCount(available_capacity);
+                if(min_age_limit === 18) {
+                  setCount(available_capacity);
+                }
               });
-            }
           });
         }
       });
