@@ -46,6 +46,7 @@ const App = () => {
   };
   useEffect(() => {}, []);
   const startImterval = () => {
+    stopInterval();
     if (pincode) {
       intervalContext.interval = setInterval(fetchDate, intervalSec);
       setInvalid(false);
