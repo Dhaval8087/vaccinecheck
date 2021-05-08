@@ -23,7 +23,7 @@ const App = () => {
   const [invalid, setInvalid] = useState(false);
   const fetchDate = () => {
     const getDate = new Date();
-    const preparedDate = `${getDate.getDate()}-${
+    const preparedDate = `${getDate.getDate()+1}-${
       getDate.getMonth() + 1
     }-${getDate.getFullYear()}`;
     fetch(
