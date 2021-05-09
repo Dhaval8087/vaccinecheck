@@ -25,7 +25,7 @@ const App = () => {
   const [lastSync, setLastSync] = useState("");
   const fetchDate = () => {
     const getDate = new Date();
-    const preparedDate = `${getDate.getDate() + 1}-${
+    const preparedDate = `${getDate.getDate() }-${
       getDate.getMonth() + 1
     }-${getDate.getFullYear()}`;
     fetch(
@@ -39,9 +39,9 @@ const App = () => {
           centers.map(({ address, sessions }) => {
             sessions.map(({ available_capacity, min_age_limit }) => {
               console.log(min_age_limit);
-              if (min_age_limit === 18) {
+              //if (min_age_limit === 18) {
                 setCount(available_capacity);
-              }
+              //}
             });
           });
         }
