@@ -20,36 +20,57 @@ const App = () => {
   const [intervalContext] = useState({ interval: null });
   const [pincode, setPincode] = useState("");
   const [intervalSec, setIntervalinSec] = useState(30000);
+  const [isIntervalStart, setIsIntervalStart] = useState(false);
   const [invalid, setInvalid] = useState(false);
+  const [lastSync, setLastSync] = useState("");
   const fetchDate = () => {
     const getDate = new Date();
-    const preparedDate = `${getDate.getDate()+1}-${
+    const preparedDate = `${getDate.getDate() + 1}-${
       getDate.getMonth() + 1
     }-${getDate.getFullYear()}`;
     fetch(
-      `https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/calendarByPin?pincode=390013&date=${preparedDate}`
+      `https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/calendarByPin?pincode=${pincode}&date=${preparedDate}`
     )
       .then((res) => res.json())
       .then((res) => {
+        setLastSync(getLastSync());
         const centers = res.centers;
         if (centers) {
           centers.map(({ address, sessions }) => {
-              sessions.map(({ available_capacity, min_age_limit }) => {
-                console.log(min_age_limit);
-                if(min_age_limit === 18) {
-                  setCount(available_capacity);
-                }
-              });
+            sessions.map(({ available_capacity, min_age_limit }) => {
+              console.log(min_age_limit);
+              if (min_age_limit === 18) {
+                setCount(available_capacity);
+              }
+            });
           });
         }
       });
   };
-  useEffect(() => {}, []);
+
+  const getLastSync = () => {
+    const currentdate = new Date();
+    const datetime =
+      "Last Sync: " +
+      currentdate.getDate() +
+      "/" +
+      (currentdate.getMonth() + 1) +
+      "/" +
+      currentdate.getFullYear() +
+      " @ " +
+      currentdate.getHours() +
+      ":" +
+      currentdate.getMinutes() +
+      ":" +
+      currentdate.getSeconds();
+    return datetime;
+  };
   const startImterval = () => {
     stopInterval();
     if (pincode) {
       intervalContext.interval = setInterval(fetchDate, intervalSec);
       setInvalid(false);
+      setIsIntervalStart(true);
     } else {
       setInvalid(true);
       toast.error("Enter pincode please!");
@@ -58,8 +79,10 @@ const App = () => {
   const stopInterval = () => {
     if (intervalContext.interval) {
       clearInterval(intervalContext.interval);
+      setIsIntervalStart(false);
     }
   };
+
   return (
     <Container>
       <ToastContainer />
@@ -98,6 +121,7 @@ const App = () => {
           <h1>{count}</h1>
         </Row>
       </Row>
+      <Row>{isIntervalStart && <h3>{lastSync}</h3>}</Row>
     </Container>
   );
 };
