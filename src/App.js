@@ -36,14 +36,17 @@ const App = () => {
         setLastSync(getLastSync());
         const centers = res.centers;
         if (centers) {
+          const seats=[]
           centers.map(({ address, sessions }) => {
             sessions.map(({ available_capacity, min_age_limit }) => {
               console.log(min_age_limit);
               //if (min_age_limit === 18) {
-                setCount(available_capacity);
+                seats.push(available_capacity)
+               
               //}
             });
           });
+          setCount(seats.toString());
         }
       });
   };
